@@ -1,0 +1,6 @@
+@echo off
+echo start processing OP330...
+python -m extract_files "OP330.json"
+echo start processing OP210...
+python -m extract_files "OP210.json"
+pause

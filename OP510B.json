@@ -1,0 +1,8 @@
+{
+    "src": "D:/Results/St510",
+    "dst": "E:/OP510B.tar",
+    "time_range": ["", ""],
+    "exts": [".txt"],
+    "gz": false,
+    "group": false
+}
