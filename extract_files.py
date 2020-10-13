@@ -52,7 +52,7 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
                 tarf.add(join(src, fn), fn, recursive=False)
 
 
-def common(paras: dict):
+def main(paras: dict):
     # ====时间范围总控制====
     if exists("time_range.json"):
         with open("time_range.json", "r", encoding="utf-8") as tf:
@@ -68,8 +68,7 @@ def common(paras: dict):
             datetime.strptime(i, "%Y-%m-%d %H:%M:%S") for i in paras["time_range"]
         )
     elif not (start and end):
-        now = datetime.now()
-        start, end = (datetime(now.year, now.month, now.day), now)
+        start, end = (datetime.min, datetime.max)
     # ====开始提取====
     extract_files(
         paras["src"],
@@ -80,36 +79,16 @@ def common(paras: dict):
     )
 
 
-def negtive_parts(paras: dict):
-    name_list = set(paras["valid_names"]) - {""}
-    name_list = {re.compile(re.escape(i)) for i in name_list}
-    extract_files(
-        paras["src"],
-        paras["dst"],
-        partial(filter_by_name, compiled_name_list=name_list, exts=set(paras["exts"])),
-    )
-
-
-def filter_by_name(file, compiled_name_list, exts):
-    valid_ext = (not exts) or splitext(file)[1] in exts
-    in_list = next(
-        filter(lambda i: i.search(basename(file)), compiled_name_list), False
-    )
-    return valid_ext and in_list
-
-
 def filter_by_time(file, start, end, exts):
     ft = datetime.fromtimestamp(getmtime(file))
     valid_time = start <= ft and ft <= end
-    valid_ext = (not exts) or splitext(file)[1] in exts
+    file_ext = splitext(file)[1]
+    valid_ext = (not exts) or (not file_ext) or file_ext.lower() in exts
     return valid_time and valid_ext
 
 
 paras_file = argv[1]
-# paras_file = "test.json"
 with open(paras_file, "r", encoding="utf-8") as jf:
     paras = json_load(jf)
-if "valid_names" in paras.keys():
-    negtive_parts(paras)
-else:
-    common(paras)
+paras["exts"] = {k: v.lower() for (k, v) in paras["exts"].items()}
+main(paras)

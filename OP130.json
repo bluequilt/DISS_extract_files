@@ -1,8 +1,8 @@
 {
-    "src": "E:/Data Store/D57",
+    "src": "E:/Data Store",
     "dst": "F:/OP130.tar",
     "time_range": ["", ""],
-    "exts": [],
+    "exts": ["csv","tdms","tdms_index"],
     "gz": false,
     "group": false
 }

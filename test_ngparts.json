@@ -1,9 +1,0 @@
-{
-    "src": "test",
-    "dst": "test_result/test.tar",
-    "exts":[],
-    "valid_names": [
-        "2020-08-25_14-18-16",
-        "2020-08-26_15-21-28"
-    ]
-}

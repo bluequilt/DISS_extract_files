@@ -1,6 +1,6 @@
 {
     "src": "E:/Data Store",
-    "dst": "F:/OP310.tar",
+    "dst": "F:/OP000.tar",
     "time_range": ["", ""],
     "exts": ["csv","tdms","tdms_index"],
     "gz": false,
