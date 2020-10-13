@@ -73,7 +73,7 @@ def main(paras: dict):
     extract_files(
         paras["src"],
         paras["dst"],
-        partial(filter_by_time, start=start, end=end, exts=set(paras["exts"])),
+        partial(filter_by_time, start=start, end=end, exts=paras["exts"]),
         gz=paras["gz"],
         group=paras["group"],
     )
@@ -90,5 +90,5 @@ def filter_by_time(file, start, end, exts):
 paras_file = argv[1]
 with open(paras_file, "r", encoding="utf-8") as jf:
     paras = json_load(jf)
-paras["exts"] = [v.lower() for v in paras["exts"]]
+paras["exts"] = {v.lower() for v in paras["exts"]}
 main(paras)
