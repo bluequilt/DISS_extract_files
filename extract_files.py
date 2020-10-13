@@ -90,5 +90,5 @@ def filter_by_time(file, start, end, exts):
 paras_file = argv[1]
 with open(paras_file, "r", encoding="utf-8") as jf:
     paras = json_load(jf)
-paras["exts"] = {k: v.lower() for (k, v) in paras["exts"].items()}
+paras["exts"] = [v.lower() for v in paras["exts"]]
 main(paras)
