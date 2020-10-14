@@ -2,7 +2,7 @@
     "src": "E:/Data Store",
     "dst": "F:/OP310.tar",
     "time_range": ["", ""],
-    "exts": ["csv","tdms","tdms_index"],
+    "exts": [".csv",".tdms",".tdms_index"],
     "gz": false,
     "group": false
 }

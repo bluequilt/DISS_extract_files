@@ -82,8 +82,8 @@ def main(paras: dict):
 def filter_by_time(file, start, end, exts):
     ft = datetime.fromtimestamp(getmtime(file))
     valid_time = start <= ft and ft <= end
-    file_ext = splitext(file)[1]
-    valid_ext = (not exts) or (not file_ext) or file_ext.lower() in exts
+    file_ext = splitext(file)[1].lower()
+    valid_ext = (not exts) or (not file_ext) or file_ext in exts
     return valid_time and valid_ext
 
 
