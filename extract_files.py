@@ -1,10 +1,9 @@
-from pathlib import WindowsPath
-from os.path import getmtime, join, splitext, exists, basename
+from pathlib import Path
+from os.path import getmtime, join, splitext, exists
 from tarfile import open as tar_open
 from collections import defaultdict
 from datetime import datetime
 from functools import partial
-import re
 from sys import argv
 from json import load as json_load
 from importlib import import_module
@@ -23,7 +22,7 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
     src = src.replace("/", "\\").rstrip("\\") + "\\"
     if group:
         groups = defaultdict(set)
-        with tqdm(WindowsPath(src).rglob("*"), "搜索", unit="文件", ascii=True) as bar:
+        with tqdm(Path(src).rglob("*"), "搜索", unit="文件", ascii=True) as bar:
             all_files = {str(fn) for fn in bar}
         with tqdm(all_files, "分类", unit="文件", ascii=True) as bar:
             for fn in filter(judge_func, bar):
@@ -41,7 +40,7 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
                     for fn in inner_bar:
                         tarf.add(join(src, fn), join(tarfn_head, fn), recursive=False)
     else:
-        with tqdm(WindowsPath(src).rglob("*"), "搜索", unit="文件", ascii=True) as bar:
+        with tqdm(Path(src).rglob("*"), "搜索", unit="文件", ascii=True) as bar:
             all_files = {str(fn) for fn in bar}
         with tqdm(all_files, "分类", unit="文件", ascii=True) as bar:
             valid_files = sorted(fn.replace(src, "") for fn in filter(judge_func, bar))
