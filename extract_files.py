@@ -53,16 +53,16 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
 
 def main(paras: dict):
     # ====时间范围总控制====
+    start, end = None, None
     if exists("time_range.json"):
         with open("time_range.json", "r", encoding="utf-8") as tf:
             time_range = json_load(tf)
-        start, end = (
-            datetime.strptime(i, "%Y-%m-%d %H:%M:%S") for i in time_range["time_range"]
-        )
-    else:
-        start, end = None, None
+        if time_range["time_range"] and all(time_range["time_range"]):
+            start, end = (
+                datetime.strptime(i, "%Y-%m-%d %H:%M:%S") for i in paras["time_range"]
+            )
     # ====选择时间范围====
-    if all(paras["time_range"]):
+    if paras["time_range"] and all(paras["time_range"]):
         start, end = (
             datetime.strptime(i, "%Y-%m-%d %H:%M:%S") for i in paras["time_range"]
         )
