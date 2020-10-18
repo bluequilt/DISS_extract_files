@@ -6,16 +6,7 @@ from datetime import datetime
 from functools import partial
 from sys import argv
 from json import load as json_load
-from importlib import import_module
-
-try:
-    import tqdm
-except ModuleNotFoundError as e:
-    tqdm = import_module("mytqdm")
-try:
-    from tqdm import tqdm
-except ModuleNotFoundError as e:
-    from mytqdm import tqdm
+from mytqdm import tqdm
 
 
 def extract_files(src, dst, judge_func, *, gz=False, group=False):
@@ -28,9 +19,8 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
             for fn in filter(judge_func, bar):
                 ft = datetime.fromtimestamp(getmtime(fn))
                 groups[(ft.year, ft.month, ft.day)].add(fn.replace(src, ""))
-        groups = sorted((k, sorted(v)) for k, v in groups.items())
         with tar_open(dst, "w" + (":gz" if gz else "")) as tarf, tqdm(
-            groups, "导出组", ascii=True
+            groups.items(), "导出组", ascii=True
         ) as bar:
             for (year, month, day), files in bar:
                 tarfn_head = join(
@@ -43,7 +33,7 @@ def extract_files(src, dst, judge_func, *, gz=False, group=False):
         with tqdm(Path(src).rglob("*"), "搜索", unit="文件", ascii=True) as bar:
             all_files = {str(fn) for fn in bar}
         with tqdm(all_files, "分类", unit="文件", ascii=True) as bar:
-            valid_files = sorted(fn.replace(src, "") for fn in filter(judge_func, bar))
+            valid_files = {fn.replace(src, "") for fn in filter(judge_func, bar)}
         with tar_open(dst, "w" + (":gz" if gz else "")) as tarf, tqdm(
             valid_files, "导出", ascii=True
         ) as bar:
